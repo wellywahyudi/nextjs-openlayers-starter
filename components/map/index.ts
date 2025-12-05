@@ -8,6 +8,10 @@
  * - MapControls: Zoom, reset, and fullscreen controls
  * - MapTileSwitcher: Tile provider switcher UI
  * - MapMain: Main map component with tile provider management
+ * - MapSearchBar: Country search with keyboard navigation
+ * - MapDetailsPanel: Country details side panel/drawer
+ * - MapPOIPanel: POI management panel with CRUD operations
+ * - MapUser: User profile dropdown menu
  * 
  * Utilities:
  * - MapProvider: Context provider for map instance
@@ -21,6 +25,10 @@ export { OpenLayersGeoJSON } from './OpenLayersGeoJSON';
 export { MapControls } from './MapControls';
 export { MapTileSwitcher } from './MapTileSwitcher';
 export { MapMain } from './MapMain';
+export { MapSearchBar } from './MapSearchBar';
+export { MapDetailsPanel } from './MapDetailsPanel';
+export { MapPOIPanel } from './MapPOIPanel';
+export { MapUser } from './MapUser';
 export { MapProvider } from '@/contexts/MapContext';
 export { MapErrorBoundary } from './MapErrorBoundary';
 export { MapLoadingSpinner } from './MapLoadingSpinner';

@@ -29,7 +29,7 @@ export const MapControls = memo(function MapControls() {
   }, []);
 
   return (
-    <div className="absolute bottom-24 sm:bottom-8 right-4 flex flex-col items-center gap-2 z-[1000]">
+    <div className="absolute bottom-24 sm:bottom-8 right-4 flex flex-col items-center gap-2 z-[900]">
       {/* Zoom Controls */}
       <div className="flex flex-col overflow-hidden rounded-lg bg-white dark:bg-slate-700 shadow-lg">
         <button
