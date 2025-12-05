@@ -10,8 +10,11 @@ import { MapTileSwitcher } from "@/components/map/MapTileSwitcher";
 import { MapSearchBar } from "@/components/map/MapSearchBar";
 import { MapDetailsPanel } from "@/components/map/MapDetailsPanel";
 import { MapPOIPanel } from "@/components/map/MapPOIPanel";
+import { MapContextMenu } from "@/components/map/MapContextMenu";
 import { useMapTileProvider } from "@/hooks/useMapTileProvider";
 import { usePOIManager } from "@/hooks/usePOIManager";
+import { useMapContextMenu } from "@/hooks/useMapContextMenu";
+import { useMapMarkers } from "@/hooks/useMapMarkers";
 import type { POICategory } from "@/types/poi";
 
 /**
@@ -28,10 +31,18 @@ import type { POICategory } from "@/types/poi";
  * - Country search with GeoJSON rendering
  * - Country details panel
  * - POI management with CRUD operations
+ * - Right-click context menu
  */
 export function MapMain() {
   const { tileProvider, currentProviderId, setProviderId } =
     useMapTileProvider();
+
+  // Context menu hook
+  const {
+    isOpen: isContextMenuOpen,
+    position: contextMenuPosition,
+    close: closeContextMenu,
+  } = useMapContextMenu();
 
   const [selectedCountry, setSelectedCountry] =
     useState<GeoJSON.Feature | null>(null);
@@ -62,6 +73,9 @@ export function MapMain() {
     importGeoJSON,
     flyToPOI,
   } = usePOIManager();
+
+  // Map Markers hook
+  const { addMarker } = useMapMarkers();
 
   // Handle country selection from search
   const handleCountrySelect = useCallback(async (countryId: string) => {
@@ -146,6 +160,38 @@ export function MapMain() {
     [importGeoJSON]
   );
 
+  // Context menu handlers
+  const handleAddMarker = useCallback(
+    async (lat: number, lng: number) => {
+      const markerId = await addMarker(
+        lat,
+        lng,
+        `${lat.toFixed(6)}, ${lng.toFixed(6)}`
+      );
+      if (markerId) {
+        toast.success("Marker added successfully");
+      } else {
+        toast.error("Failed to add marker");
+      }
+    },
+    [addMarker]
+  );
+
+  const handleStartMeasurement = useCallback(() => {
+    toast.info("Measurement tool activated");
+    // TODO: Implement measurement functionality in future task
+  }, []);
+
+  const handleAddPOIFromContextMenu = useCallback(
+    (lat: number, lng: number) => {
+      setPOIInitialCoords({ lat, lng });
+      setPOIPanelMode("add");
+      setIsPOIPanelOpen(true);
+      toast.success("Opening POI panel with selected location");
+    },
+    []
+  );
+
   return (
     <>
       <OpenLayersMap className="w-full h-full">
@@ -190,6 +236,14 @@ export function MapMain() {
       <MapTileSwitcher
         selectedProviderId={currentProviderId}
         onProviderChange={setProviderId}
+      />
+      <MapContextMenu
+        isOpen={isContextMenuOpen}
+        position={contextMenuPosition}
+        onClose={closeContextMenu}
+        onAddMarker={handleAddMarker}
+        onStartMeasurement={handleStartMeasurement}
+        onAddPOI={handleAddPOIFromContextMenu}
       />
     </>
   );
