@@ -8,6 +8,7 @@ import { OpenLayersGeoJSON } from "@/components/map/OpenLayersGeoJSON";
 import { MapControls } from "@/components/map/MapControls";
 import { MapTileSwitcher } from "@/components/map/MapTileSwitcher";
 import { MapSearchBar } from "@/components/map/MapSearchBar";
+import { MapTopBar } from "@/components/map/MapTopBar";
 import { MapDetailsPanel } from "@/components/map/MapDetailsPanel";
 import { MapPOIPanel } from "@/components/map/MapPOIPanel";
 import { MapContextMenu } from "@/components/map/MapContextMenu";
@@ -196,6 +197,25 @@ export function MapMain() {
     []
   );
 
+  // Category click handler for MapTopBar
+  const handleCategoryClick = useCallback(
+    (categoryId: string) => {
+      // Map category IDs to POI categories
+      const categoryMapping: Record<string, POICategory> = {
+        restaurants: "food-drink",
+        hotels: "lodging",
+        attractions: "tourism",
+        transit: "transport",
+      };
+
+      const poiCategory = categoryMapping[categoryId.toLowerCase()];
+      if (poiCategory) {
+        handleOpenPOIPanel(poiCategory);
+      }
+    },
+    [handleOpenPOIPanel]
+  );
+
   return (
     <>
       <OpenLayersMap className="w-full h-full">
@@ -211,6 +231,7 @@ export function MapMain() {
         isPOIPanelOpen={isPOIPanelOpen}
         onClosePOIPanel={handleClosePOIPanel}
       />
+      <MapTopBar onCategoryClick={handleCategoryClick} />
       <MapDetailsPanel
         country={selectedCountry}
         onClose={handleClearSelection}

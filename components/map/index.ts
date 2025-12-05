@@ -13,6 +13,8 @@
  * - MapPOIPanel: POI management panel with CRUD operations
  * - MapContextMenu: Right-click context menu for map interactions
  * - MapMeasurementPanel: Distance and area measurement tools
+ * - MapTopBar: Category pills and user menu
+ * - MapThemeSwitcher: Light/dark theme toggle
  * - MapUser: User profile dropdown menu
  * 
  * Utilities:
@@ -32,6 +34,8 @@ export { MapDetailsPanel } from './MapDetailsPanel';
 export { MapPOIPanel } from './MapPOIPanel';
 export { MapContextMenu } from './MapContextMenu';
 export { MapMeasurementPanel } from './MapMeasurementPanel';
+export { MapTopBar } from './MapTopBar';
+export { MapThemeSwitcher } from './MapThemeSwitcher';
 export { MapUser } from './MapUser';
 export { MapProvider } from '@/contexts/MapContext';
 export { MapErrorBoundary } from './MapErrorBoundary';
