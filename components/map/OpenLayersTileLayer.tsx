@@ -71,8 +71,15 @@ export function OpenLayersTileLayer({ provider }: OpenLayersTileLayerProps) {
         });
       } else {
         // Use XYZ source for other providers
+        // Handle {s} subdomain placeholder - replace with 'a' as default
+        // OpenLayers doesn't support {s} natively, so we use a single subdomain
+        let url = provider.url.replace("{s}", "a");
+
+        // Handle {r} retina placeholder - remove it for standard resolution
+        url = url.replace("{r}", "");
+
         tileSource = new XYZ({
-          url: provider.url,
+          url: url,
           attributions: provider.attribution,
           maxZoom: provider.maxZoom,
         });
