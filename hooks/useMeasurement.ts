@@ -9,7 +9,7 @@ import VectorSource from 'ol/source/Vector';
 import { Feature } from 'ol';
 import { Point, LineString, Polygon } from 'ol/geom';
 import { Style, Stroke, Fill, Circle as CircleStyle } from 'ol/style';
-import { getLength, getArea } from 'ol/sphere';
+import { getArea } from 'ol/sphere';
 import type { MapBrowserEvent } from 'ol';
 import type { Coordinate } from 'ol/coordinate';
 
@@ -128,7 +128,7 @@ export function useMeasurement() {
 
     // Remove click handler
     if (clickHandlerRef.current) {
-      // @ts-ignore - OpenLayers event types are complex
+      // @ts-expect-error - OpenLayers event types are complex
       map.un('click', clickHandlerRef.current);
       clickHandlerRef.current = null;
     }
@@ -236,7 +236,7 @@ export function useMeasurement() {
 
     // Store handler reference for cleanup
     clickHandlerRef.current = handleMapClick;
-    // @ts-ignore - OpenLayers event types are complex
+    // @ts-expect-error - OpenLayers event types are complex
     map.on('click', handleMapClick);
     
     // Set crosshair cursor
@@ -308,7 +308,7 @@ export function useMeasurement() {
 
     // Remove ONLY our click handler
     if (clickHandlerRef.current) {
-      // @ts-ignore - OpenLayers event types are complex
+      // @ts-expect-error - OpenLayers event types are complex
       map.un('click', clickHandlerRef.current);
       clickHandlerRef.current = null;
     }
@@ -326,7 +326,7 @@ export function useMeasurement() {
   useEffect(() => {
     return () => {
       if (map && clickHandlerRef.current) {
-        // @ts-ignore - OpenLayers event types are complex
+        // @ts-expect-error - OpenLayers event types are complex
         map.un('click', clickHandlerRef.current);
         clickHandlerRef.current = null;
       }

@@ -364,6 +364,10 @@ export function useMapMarkers() {
 
   // Cleanup on unmount
   useEffect(() => {
+    // Capture current refs for cleanup
+    const currentOverlays = overlaysRef.current;
+    const currentPopupElements = popupElementsRef.current;
+    
     return () => {
       if (vectorLayerRef.current && map) {
         map.removeLayer(vectorLayerRef.current);
@@ -371,16 +375,16 @@ export function useMapMarkers() {
       if (vectorSourceRef.current) {
         vectorSourceRef.current.clear();
       }
-      overlaysRef.current.forEach((overlay: Overlay) => {
+      currentOverlays.forEach((overlay: Overlay) => {
         if (map) {
           map.removeOverlay(overlay);
         }
       });
-      overlaysRef.current.clear();
-      popupElementsRef.current.forEach((element: HTMLDivElement) => {
+      currentOverlays.clear();
+      currentPopupElements.forEach((element: HTMLDivElement) => {
         element.remove();
       });
-      popupElementsRef.current.clear();
+      currentPopupElements.clear();
       vectorLayerRef.current = null;
       vectorSourceRef.current = null;
     };

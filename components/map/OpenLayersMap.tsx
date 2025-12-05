@@ -109,6 +109,7 @@ export function OpenLayersMap({
       }
 
       // Store resize observer for cleanup
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       (map as any)._resizeObserver = resizeObserver;
     } catch (error) {
       console.error("Failed to initialize OpenLayers map:", error);
@@ -121,6 +122,7 @@ export function OpenLayersMap({
         const map = mapInstanceRef.current;
 
         // Clean up resize observer
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const resizeObserver = (map as any)._resizeObserver;
         if (resizeObserver) {
           resizeObserver.disconnect();
@@ -139,6 +141,7 @@ export function OpenLayersMap({
         setMap(null);
       }
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []); // Empty dependency array - only initialize once
 
   // Update view when center or zoom props change

@@ -6,7 +6,7 @@ export function Hero() {
     <div className="relative flex flex-col items-center justify-center text-center px-4 py-16 sm:py-24">
       {/* Content */}
       <div className="max-w-4xl mx-auto space-y-6">
-        <h1 className="scroll-m-20 border-b pb-2 text-4xl sm:text-7xl text-white font-extrabold tracking-tight first:mt-0 text-balance">
+        <h1 className="scroll-m-20 border-b pb-2 text-4xl sm:text-6xl text-white font-extrabold tracking-wide first:mt-0 text-balance">
           Next.js OpenLayers Starter
         </h1>
 

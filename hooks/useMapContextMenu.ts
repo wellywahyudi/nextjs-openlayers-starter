@@ -117,21 +117,20 @@ export function useMapContextMenu(): UseMapContextMenuReturn {
     moveStartHandlerRef.current = handleMoveStart;
 
     // Attach handlers
-    // @ts-ignore - OpenLayers event types are complex
+    // @ts-expect-error - OpenLayers event types are complex
     map.on('contextmenu', handleContextMenu);
-    // @ts-ignore - OpenLayers event types are complex
     map.on('click', handleClick);
     map.on('movestart', handleMoveStart);
 
     // Cleanup
     return () => {
       if (contextMenuHandlerRef.current) {
-        // @ts-ignore - OpenLayers event types are complex
+        // @ts-expect-error - OpenLayers event types are complex
         map.un('contextmenu', contextMenuHandlerRef.current);
         contextMenuHandlerRef.current = null;
       }
       if (clickHandlerRef.current) {
-        // @ts-ignore - OpenLayers event types are complex
+        // @ts-expect-error - OpenLayers event types are complex
         map.un('click', clickHandlerRef.current);
         clickHandlerRef.current = null;
       }

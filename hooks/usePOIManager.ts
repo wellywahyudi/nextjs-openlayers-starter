@@ -10,7 +10,6 @@ import VectorSource from 'ol/source/Vector';
 import Feature from 'ol/Feature';
 import Point from 'ol/geom/Point';
 import { Style, Icon, Fill, Stroke, Text } from 'ol/style';
-import GeoJSON from 'ol/format/GeoJSON';
 import Overlay from 'ol/Overlay';
 import type { Map } from 'ol';
 
@@ -291,7 +290,6 @@ export function usePOIManager() {
         });
 
         if (feature) {
-          const poiId = feature.get('poiId');
           const title = feature.get('title');
           const description = feature.get('description');
           const lat = feature.get('lat');
