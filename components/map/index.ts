@@ -12,6 +12,7 @@
  * - MapDetailsPanel: Country details side panel/drawer
  * - MapPOIPanel: POI management panel with CRUD operations
  * - MapContextMenu: Right-click context menu for map interactions
+ * - MapMeasurementPanel: Distance and area measurement tools
  * - MapUser: User profile dropdown menu
  * 
  * Utilities:
@@ -30,6 +31,7 @@ export { MapSearchBar } from './MapSearchBar';
 export { MapDetailsPanel } from './MapDetailsPanel';
 export { MapPOIPanel } from './MapPOIPanel';
 export { MapContextMenu } from './MapContextMenu';
+export { MapMeasurementPanel } from './MapMeasurementPanel';
 export { MapUser } from './MapUser';
 export { MapProvider } from '@/contexts/MapContext';
 export { MapErrorBoundary } from './MapErrorBoundary';

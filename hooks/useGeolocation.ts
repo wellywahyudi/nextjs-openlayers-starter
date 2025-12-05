@@ -3,12 +3,13 @@
 import { useState, useCallback, useRef, useEffect } from 'react';
 import { toast } from 'sonner';
 import { useOpenLayersMap } from './useOpenLayersMap';
+import { latLngToOL } from '@/lib/utils/coordinates';
+import { MAP_ANIMATION_DURATION } from '@/constants/map-config';
 import { Feature } from 'ol';
 import { Point } from 'ol/geom';
 import { Vector as VectorLayer } from 'ol/layer';
 import { Vector as VectorSource } from 'ol/source';
 import { Circle as CircleStyle, Fill, Stroke, Style } from 'ol/style';
-import { fromLonLat } from 'ol/proj';
 
 /**
  * Custom hook for geolocation functionality with OpenLayers
@@ -74,7 +75,8 @@ export function useGeolocation() {
         setIsLocating(false);
         
         const { latitude, longitude, accuracy } = position.coords;
-        const coords = fromLonLat([longitude, latitude]);
+        // Use latLngToOL utility for coordinate conversion
+        const coords = latLngToOL([latitude, longitude]);
 
         // Create vector source for location markers
         const vectorSource = new VectorSource();
@@ -130,12 +132,12 @@ export function useGeolocation() {
         locationLayerRef.current = vectorLayer;
         map.addLayer(vectorLayer);
 
-        // Animate view to location
+        // Animate view to location using view.animate()
         const view = map.getView();
         view.animate({
           center: coords,
           zoom: Math.max(view.getZoom() || 10, 16),
-          duration: 1000,
+          duration: MAP_ANIMATION_DURATION,
         });
       },
       (error) => {

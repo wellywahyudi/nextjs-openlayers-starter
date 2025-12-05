@@ -11,6 +11,7 @@ import { MapSearchBar } from "@/components/map/MapSearchBar";
 import { MapDetailsPanel } from "@/components/map/MapDetailsPanel";
 import { MapPOIPanel } from "@/components/map/MapPOIPanel";
 import { MapContextMenu } from "@/components/map/MapContextMenu";
+import { MapMeasurementPanel } from "@/components/map/MapMeasurementPanel";
 import { useMapTileProvider } from "@/hooks/useMapTileProvider";
 import { usePOIManager } from "@/hooks/usePOIManager";
 import { useMapContextMenu } from "@/hooks/useMapContextMenu";
@@ -61,6 +62,9 @@ export function MapMain() {
     lat: number;
     lng: number;
   } | null>(null);
+
+  // Measurement Panel state
+  const [isMeasurementPanelOpen, setIsMeasurementPanelOpen] = useState(false);
 
   // POI Manager hook
   const {
@@ -178,8 +182,8 @@ export function MapMain() {
   );
 
   const handleStartMeasurement = useCallback(() => {
+    setIsMeasurementPanelOpen(true);
     toast.info("Measurement tool activated");
-    // TODO: Implement measurement functionality in future task
   }, []);
 
   const handleAddPOIFromContextMenu = useCallback(
@@ -202,6 +206,7 @@ export function MapMain() {
         onCountrySelect={handleCountrySelect}
         selectedCountry={selectedCountry}
         onClearSelection={handleClearSelection}
+        onMeasurementClick={handleStartMeasurement}
         onPOIClick={() => handleOpenPOIPanel()}
         isPOIPanelOpen={isPOIPanelOpen}
         onClosePOIPanel={handleClosePOIPanel}
@@ -244,6 +249,10 @@ export function MapMain() {
         onAddMarker={handleAddMarker}
         onStartMeasurement={handleStartMeasurement}
         onAddPOI={handleAddPOIFromContextMenu}
+      />
+      <MapMeasurementPanel
+        isOpen={isMeasurementPanelOpen}
+        onClose={() => setIsMeasurementPanelOpen(false)}
       />
     </>
   );
