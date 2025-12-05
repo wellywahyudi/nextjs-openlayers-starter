@@ -1,36 +1,261 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Next.js OpenLayers Starter
 
-## Getting Started
+A production-ready Next.js 16 starter template with vanilla OpenLayers integration. Build modern, interactive map applications with a Google Maps-inspired UI.
 
-First, run the development server:
+[![Next.js](https://img.shields.io/badge/Next.js-16.0.7-black?logo=next.js)](https://nextjs.org/)
+[![React](https://img.shields.io/badge/React-19.2.1-61DAFB?logo=react)](https://react.dev/)
+[![OpenLayers](https://img.shields.io/badge/OpenLayers-9.0-1F6B75?logo=openlayers)](https://openlayers.org/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5-3178C6?logo=typescript)](https://www.typescriptlang.org/)
+[![Tailwind CSS](https://img.shields.io/badge/Tailwind-4-06B6D4?logo=tailwindcss)](https://tailwindcss.com/)
+[![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
+
+![Demo Screenshot](screenshot.png)
+
+## ✨ Features
+
+### Core Map Features
+
+- **Modern Map Interface** — Google Maps-inspired UI with smooth animations
+- **Multiple Tile Providers** — OpenStreetMap, Satellite (Esri), and Dark mode (CARTO)
+- **Theme-Aware Basemaps** — Auto-switches map style based on light/dark theme
+- **GeoJSON Support** — Render and style geographic features with fly-to animations
+- **Country Search** — Debounced search with keyboard navigation (↑↓ Enter Esc)
+- **Map Controls** — Zoom, fullscreen, geolocation, and reset view
+- **Responsive Design** — Mobile-first approach with adaptive layouts
+- **Server Components** — Next.js 16 App Router with optimized client boundaries
+
+### POI (Point of Interest) Management
+
+- **Full CRUD Operations** — Create, read, update, and delete custom places
+- **14 Category Types** — Food & Drink, Shopping, Transport, Lodging, Health, Entertainment, Nature, Services, Education, Religion, Business, Tourism, Emergency, Utilities
+- **Interactive Location Picker** — Click-to-select with live cursor tracking and crosshair cursor
+- **LocalStorage Persistence** — Your places are saved automatically
+- **GeoJSON Import/Export** — Share and backup your places
+- **Category Filtering** — Filter places by category with color-coded markers
+- **Fly-to Animation** — Smooth navigation to any saved place
+- **Mobile-Optimized** — Drawer UI on mobile, side panel on desktop
+- **Toast Notifications** — Beautiful, colorful feedback for all actions
+
+### Advanced Features
+
+- **Context Menu** — Right-click for quick actions (copy coordinates, add marker, measure, save place)
+- **Measurement Tools** — Distance and area measurement with interactive drawing
+- **User Markers** — Add custom markers anywhere on the map
+- **Real-time Coordinate Display** — Live lat/lng tracking when selecting locations
+- **Dark Mode Support** — Seamless theme switching with persistent preferences
+- **Error Boundaries** — Graceful error handling with fallback UI
+
+## 🛠 Tech Stack
+
+| Category      | Technology                              |
+| ------------- | --------------------------------------- |
+| Framework     | Next.js 16.0.7 (App Router)             |
+| UI            | React 19.2.1, Tailwind CSS 4, shadcn/ui |
+| Maps          | OpenLayers 10.7.0 (vanilla, no wrapper) |
+| Icons         | Lucide React                            |
+| Theming       | next-themes                             |
+| Notifications | Sonner (toast notifications)            |
+| Drawers       | Vaul (mobile-optimized)                 |
+| Language      | TypeScript 5                            |
+
+## 🚀 Quick Start
 
 ```bash
+# Clone the repository
+git clone https://github.com/wellywahyudi/nextjs-openlayers-starter.git
+cd nextjs-openlayers-starter
+
+# Install dependencies
+npm install
+
+# Start development server
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000) to view the landing page, then navigate to `/map` for the interactive map.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## 📁 Project Structure
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```
+├── app/
+│   ├── api/countries/     # Country search API
+│   ├── map/               # Map page (Server Component)
+│   └── page.tsx           # Landing page
+├── components/
+│   ├── landing/           # Hero, navigation, tech stack
+│   ├── map/               # Map components (controls, layers, search)
+│   └── ui/                # shadcn/ui components
+├── contexts/              # MapContext, ThemeContext
+├── hooks/                 # useOpenLayersMap, useMapControls, useMapTileProvider
+├── constants/             # Map config, tile providers
+├── lib/
+│   └── utils/             # Coordinate conversion utilities
+└── types/                 # TypeScript definitions
+```
 
-## Learn More
+## 🗺 Map Components
 
-To learn more about Next.js, take a look at the following resources:
+| Component             | Description                                 |
+| --------------------- | ------------------------------------------- |
+| `OpenLayersMap`       | Core map container with initialization      |
+| `OpenLayersTileLayer` | Dynamic tile layer switching                |
+| `OpenLayersGeoJSON`   | GeoJSON rendering with styling              |
+| `MapControls`         | Zoom, fullscreen, location, reset           |
+| `MapTileSwitcher`     | Tile provider switcher with previews        |
+| `MapSearchBar`        | Country search with autocomplete            |
+| `MapContextMenu`      | Right-click menu for quick actions          |
+| `MapPOIPanel`         | POI management with CRUD operations         |
+| `MapMeasurementPanel` | Distance and area measurement tools         |
+| `MapDetailsPanel`     | Country information with REST Countries API |
+| `MapErrorBoundary`    | Error handling with fallback UI             |
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## 🎨 Customization
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### Default Map View
 
-## Deploy on Vercel
+Edit `constants/map-config.ts`:
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+```typescript
+export const DEFAULT_MAP_CONFIG: MapConfig = {
+  defaultCenter: [-2.911154, 120.074263], // Indonesia [lat, lng]
+  defaultZoom: 5,
+  minZoom: 3,
+  maxZoom: 18,
+};
+```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+### Add Tile Providers
+
+Edit `constants/tile-providers.ts`:
+
+```typescript
+export const TILE_PROVIDERS: TileProvider[] = [
+  {
+    id: "custom",
+    name: "Custom Map",
+    url: "https://your-tile-server/{z}/{x}/{y}.png",
+    attribution: "© Your Attribution",
+    maxZoom: 19,
+    category: "standard",
+  },
+  // ...existing providers
+];
+```
+
+## 🔧 OpenLayers-Specific Notes
+
+### Coordinate System
+
+OpenLayers uses **[lng, lat]** format with explicit projections (EPSG:3857 Web Mercator by default), while the application API uses **[lat, lng]** for consistency with common conventions.
+
+**Coordinate conversion utilities** are provided in `lib/utils/coordinates.ts`:
+
+```typescript
+import { latLngToOL, olToLatLng } from "@/lib/utils/coordinates";
+
+// Convert [lat, lng] to OpenLayers coordinate
+const olCoord = latLngToOL([51.505, -0.09]);
+
+// Convert OpenLayers coordinate back to [lat, lng]
+const latLng = olToLatLng(olCoord);
+```
+
+### Layer Management
+
+OpenLayers requires explicit layer management. Layers are organized in this stack order (bottom to top):
+
+1. **Base Tile Layer** — OSM, Satellite, or Dark mode tiles
+2. **GeoJSON Vector Layer** — Country boundaries and features
+3. **POI Vector Layer** — User-created points of interest
+4. **Marker Vector Layer** — Temporary user markers
+5. **Measurement Vector Layer** — Distance and area measurements
+
+### Memory Management
+
+OpenLayers requires explicit cleanup to prevent memory leaks. All map components properly dispose of resources:
+
+```typescript
+useEffect(() => {
+  // ... map initialization
+
+  return () => {
+    map.setTarget(undefined); // Detach from DOM
+    map.dispose(); // Dispose of resources
+    // Event listeners are automatically cleaned up
+  };
+}, []);
+```
+
+### Tree-Shaking
+
+OpenLayers is fully tree-shakeable. Import only what you need:
+
+```typescript
+// ✅ Good - tree-shakeable
+import Map from "ol/Map";
+import View from "ol/View";
+import TileLayer from "ol/layer/Tile";
+
+// ❌ Bad - imports everything
+import * as ol from "ol";
+```
+
+### TypeScript Support
+
+OpenLayers has built-in TypeScript definitions, so no `@types` package is needed. All map APIs are fully typed.
+
+## 📜 Scripts
+
+```bash
+npm run dev      # Start development server
+npm run build    # Build for production
+npm run start    # Start production server
+npm run lint     # Run ESLint
+```
+
+## 🚢 Deploy to Vercel
+
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/yourusername/nextjs-openlayers-starter)
+
+### Manual Deployment
+
+1. Install Vercel CLI:
+
+```bash
+npm i -g vercel
+```
+
+2. Deploy:
+
+```bash
+vercel
+```
+
+3. Follow the prompts to link your project
+
+### Environment Variables
+
+No environment variables required for basic deployment. The app uses public GeoJSON data from the `/public/data` directory.
+
+## 📊 Production Readiness
+
+This starter is production-ready with:
+
+- ✅ Error boundaries and graceful fallbacks
+- ✅ Optimized bundle size with tree-shaking
+- ✅ Memory leak prevention with proper cleanup
+- ✅ Toast notifications instead of blocking alerts
+- ✅ TypeScript strict mode
+- ✅ Responsive design (mobile-first)
+- ✅ Accessibility features (ARIA labels, keyboard navigation)
+- ✅ Dark mode support
+- ✅ Coordinate conversion utilities for projection handling
+- ✅ Explicit layer management for performance
+
+## 🤝 Contributing
+
+Contributions are welcome! Please feel free to submit a Pull Request.
+
+## 📄 License
+
+MIT License — feel free to use this starter for personal or commercial projects.
