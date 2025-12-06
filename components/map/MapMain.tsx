@@ -220,9 +220,36 @@ export function MapMain() {
     [handleOpenPOIPanel]
   );
 
+  // Handle map click for POI location selection
+  const handleMapClick = useCallback(
+    (lat: number, lng: number) => {
+      if (isSelectingPOILocation) {
+        setPOIInitialCoords({ lat, lng });
+        setIsSelectingPOILocation(false);
+        toast.success("Location selected");
+      }
+    },
+    [isSelectingPOILocation]
+  );
+
+  // Handle map mouse move for cursor coordinates
+  const handleMapMouseMove = useCallback(
+    (lat: number, lng: number) => {
+      if (isSelectingPOILocation) {
+        setCursorCoords({ lat, lng });
+      }
+    },
+    [isSelectingPOILocation]
+  );
+
   return (
     <>
-      <OpenLayersMap className="w-full h-full">
+      <OpenLayersMap
+        className="w-full h-full"
+        onClick={handleMapClick}
+        onMouseMove={handleMapMouseMove}
+        cursorStyle={isSelectingPOILocation ? "crosshair" : undefined}
+      >
         <OpenLayersTileLayer provider={tileProvider} />
         <OpenLayersGeoJSON data={selectedCountry} fitBounds={true} />
       </OpenLayersMap>

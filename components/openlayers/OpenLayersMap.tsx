@@ -3,6 +3,7 @@
 import { useEffect, useRef, useContext } from "react";
 import Map from "ol/Map";
 import View from "ol/View";
+import { toLonLat } from "ol/proj";
 import { MapContext } from "@/contexts/MapContext";
 import { latLngToOL } from "@/lib/utils/coordinates";
 import { DEFAULT_MAP_CONFIG } from "@/constants/map-config";
@@ -18,6 +19,9 @@ export interface OpenLayersMapProps {
   maxZoom?: number;
   className?: string;
   children?: React.ReactNode;
+  onClick?: (lat: number, lng: number) => void;
+  onMouseMove?: (lat: number, lng: number) => void;
+  cursorStyle?: string;
 }
 
 /**
@@ -47,6 +51,9 @@ export function OpenLayersMap({
   maxZoom = DEFAULT_MAP_CONFIG.maxZoom,
   className = "",
   children,
+  onClick,
+  onMouseMove,
+  cursorStyle,
 }: OpenLayersMapProps) {
   const mapRef = useRef<HTMLDivElement>(null);
   const mapInstanceRef = useRef<Map | null>(null);
@@ -143,6 +150,69 @@ export function OpenLayersMap({
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []); // Empty dependency array - only initialize once
+
+  // Handle click and mouse move events
+  useEffect(() => {
+    if (!mapInstanceRef.current) return;
+
+    const map = mapInstanceRef.current;
+
+    // Click handler
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const handleClick = (e: any) => {
+      if (onClick) {
+        const coordinate = e.coordinate;
+        const [lng, lat] = toLonLat(coordinate);
+        onClick(lat, lng);
+      }
+    };
+
+    // Mouse move handler
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const handleMouseMove = (e: any) => {
+      if (onMouseMove) {
+        const coordinate = e.coordinate;
+        const [lng, lat] = toLonLat(coordinate);
+        onMouseMove(lat, lng);
+      }
+    };
+
+    // Attach event listeners
+    if (onClick) {
+      map.on("click", handleClick);
+    }
+    if (onMouseMove) {
+      map.on("pointermove", handleMouseMove);
+    }
+
+    // Cleanup
+    return () => {
+      if (onClick) {
+        map.un("click", handleClick);
+      }
+      if (onMouseMove) {
+        map.un("pointermove", handleMouseMove);
+      }
+    };
+  }, [onClick, onMouseMove]);
+
+  // Handle cursor style
+  useEffect(() => {
+    if (!mapInstanceRef.current) return;
+
+    const viewport = mapInstanceRef.current.getViewport();
+    if (viewport && cursorStyle) {
+      viewport.style.cursor = cursorStyle;
+    } else if (viewport) {
+      viewport.style.cursor = "";
+    }
+
+    return () => {
+      if (viewport) {
+        viewport.style.cursor = "";
+      }
+    };
+  }, [cursorStyle]);
 
   // Update view when center or zoom props change
   useEffect(() => {
