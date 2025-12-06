@@ -222,11 +222,13 @@ export const MapPOIPanel = memo(function MapPOIPanel({
 
   const [formData, setFormData] = useState<POIFormData>(initialFormData);
 
-  // Update form coordinates when they change from parent
-  // This is a legitimate use of setState in effect for prop synchronization
+  // Sync form coordinates with external state (map clicks)
+  // This effect responds to external system changes (user clicking on map)
+  // and updates form state accordingly - this is the correct pattern for
+  // syncing external events into React state
   useEffect(() => {
     if (initialLatStr && initialLngStr) {
-      // eslint-disable-next-line react-hooks/set-state-in-effect
+      // eslint-disable-next-line react-hooks/set-state-in-effect -- Syncing external system state (map clicks) into React state
       setFormData((prev) => ({
         ...prev,
         lat: initialLatStr,

@@ -4,10 +4,18 @@ import { useEffect, useRef, useContext } from "react";
 import Map from "ol/Map";
 import View from "ol/View";
 import { toLonLat } from "ol/proj";
+import MapBrowserEvent from "ol/MapBrowserEvent";
 import { MapContext } from "@/contexts/MapContext";
 import { latLngToOL } from "@/lib/utils/coordinates";
 import { DEFAULT_MAP_CONFIG } from "@/constants/map-config";
 import "ol/ol.css";
+
+/**
+ * Extended Map type with ResizeObserver for cleanup
+ */
+interface MapWithResizeObserver extends Map {
+  _resizeObserver?: ResizeObserver;
+}
 
 /**
  * OpenLayersMap component props
@@ -56,7 +64,7 @@ export function OpenLayersMap({
   cursorStyle,
 }: OpenLayersMapProps) {
   const mapRef = useRef<HTMLDivElement>(null);
-  const mapInstanceRef = useRef<Map | null>(null);
+  const mapInstanceRef = useRef<MapWithResizeObserver | null>(null);
   const context = useContext(MapContext);
 
   if (!context) {
@@ -92,7 +100,7 @@ export function OpenLayersMap({
       });
 
       // Create OpenLayers Map instance
-      const map = new Map({
+      const map: MapWithResizeObserver = new Map({
         target: mapRef.current,
         view: view,
         controls: [], // We'll add custom controls separately
@@ -116,8 +124,7 @@ export function OpenLayersMap({
       }
 
       // Store resize observer for cleanup
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      (map as any)._resizeObserver = resizeObserver;
+      map._resizeObserver = resizeObserver;
     } catch (error) {
       console.error("Failed to initialize OpenLayers map:", error);
       setMapError(error instanceof Error ? error : new Error(String(error)));
@@ -129,8 +136,7 @@ export function OpenLayersMap({
         const map = mapInstanceRef.current;
 
         // Clean up resize observer
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        const resizeObserver = (map as any)._resizeObserver;
+        const resizeObserver = map._resizeObserver;
         if (resizeObserver) {
           resizeObserver.disconnect();
         }
@@ -148,8 +154,7 @@ export function OpenLayersMap({
         setMap(null);
       }
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []); // Empty dependency array - only initialize once
+  }, [setMap, setMapError, startInitializing, center, zoom, minZoom, maxZoom]); // Dependencies for map initialization
 
   // Handle click and mouse move events
   useEffect(() => {
@@ -157,9 +162,8 @@ export function OpenLayersMap({
 
     const map = mapInstanceRef.current;
 
-    // Click handler
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const handleClick = (e: any) => {
+    // Click handler - OpenLayers event types are complex, using MapBrowserEvent
+    const handleClick = (e: MapBrowserEvent<PointerEvent>) => {
       if (onClick) {
         const coordinate = e.coordinate;
         const [lng, lat] = toLonLat(coordinate);
@@ -167,9 +171,8 @@ export function OpenLayersMap({
       }
     };
 
-    // Mouse move handler
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const handleMouseMove = (e: any) => {
+    // Mouse move handler - OpenLayers event types are complex, using MapBrowserEvent
+    const handleMouseMove = (e: MapBrowserEvent<PointerEvent>) => {
       if (onMouseMove) {
         const coordinate = e.coordinate;
         const [lng, lat] = toLonLat(coordinate);
@@ -177,21 +180,22 @@ export function OpenLayersMap({
       }
     };
 
-    // Attach event listeners
+    // Attach event listeners - OpenLayers has complex overloaded types for event listeners
+    // Using type assertion here as the runtime behavior is correct
     if (onClick) {
-      map.on("click", handleClick);
+      map.on("click", handleClick as Parameters<typeof map.on>[1]);
     }
     if (onMouseMove) {
-      map.on("pointermove", handleMouseMove);
+      map.on("pointermove", handleMouseMove as Parameters<typeof map.on>[1]);
     }
 
     // Cleanup
     return () => {
       if (onClick) {
-        map.un("click", handleClick);
+        map.un("click", handleClick as Parameters<typeof map.un>[1]);
       }
       if (onMouseMove) {
-        map.un("pointermove", handleMouseMove);
+        map.un("pointermove", handleMouseMove as Parameters<typeof map.un>[1]);
       }
     };
   }, [onClick, onMouseMove]);
