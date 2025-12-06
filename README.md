@@ -11,6 +11,8 @@ A production-ready Next.js 16 starter template with vanilla OpenLayers integrati
 
 ![Demo Screenshot](screenshot.png)
 
+📖 **Read the full story:** [Series 2 Google Maps Clone: With Next.js 16 + OpenLayers + TypeScript — A Modern Map Starter Kit](https://dev.to/wellywahyudi/series-2-my-nextjs-16-openlayers-typescript-starter-kit-a-modern-map-apps-setup-18am)
+
 ## ✨ Features
 
 ### Core Map Features
@@ -142,68 +144,6 @@ export const TILE_PROVIDERS: TileProvider[] = [
 ];
 ```
 
-## 🔧 OpenLayers-Specific Notes
-
-### Coordinate System
-
-OpenLayers uses **[lng, lat]** format with explicit projections (EPSG:3857 Web Mercator by default), while the application API uses **[lat, lng]** for consistency with common conventions.
-
-**Coordinate conversion utilities** are provided in `lib/utils/coordinates.ts`:
-
-```typescript
-import { latLngToOL, olToLatLng } from "@/lib/utils/coordinates";
-
-// Convert [lat, lng] to OpenLayers coordinate
-const olCoord = latLngToOL([51.505, -0.09]);
-
-// Convert OpenLayers coordinate back to [lat, lng]
-const latLng = olToLatLng(olCoord);
-```
-
-### Layer Management
-
-OpenLayers requires explicit layer management. Layers are organized in this stack order (bottom to top):
-
-1. **Base Tile Layer** — OSM, Satellite, or Dark mode tiles
-2. **GeoJSON Vector Layer** — Country boundaries and features
-3. **POI Vector Layer** — User-created points of interest
-4. **Marker Vector Layer** — Temporary user markers
-5. **Measurement Vector Layer** — Distance and area measurements
-
-### Memory Management
-
-OpenLayers requires explicit cleanup to prevent memory leaks. All map components properly dispose of resources:
-
-```typescript
-useEffect(() => {
-  // ... map initialization
-
-  return () => {
-    map.setTarget(undefined); // Detach from DOM
-    map.dispose(); // Dispose of resources
-    // Event listeners are automatically cleaned up
-  };
-}, []);
-```
-
-### Tree-Shaking
-
-OpenLayers is fully tree-shakeable. Import only what you need:
-
-```typescript
-// ✅ Good - tree-shakeable
-import Map from "ol/Map";
-import View from "ol/View";
-import TileLayer from "ol/layer/Tile";
-
-// ❌ Bad - imports everything
-import * as ol from "ol";
-```
-
-### TypeScript Support
-
-OpenLayers has built-in TypeScript definitions, so no `@types` package is needed. All map APIs are fully typed.
-
 ## 📜 Scripts
 
 ```bash
@@ -212,30 +152,6 @@ npm run build    # Build for production
 npm run start    # Start production server
 npm run lint     # Run ESLint
 ```
-
-## 🚢 Deploy to Vercel
-
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/yourusername/nextjs-openlayers-starter)
-
-### Manual Deployment
-
-1. Install Vercel CLI:
-
-```bash
-npm i -g vercel
-```
-
-2. Deploy:
-
-```bash
-vercel
-```
-
-3. Follow the prompts to link your project
-
-### Environment Variables
-
-No environment variables required for basic deployment. The app uses public GeoJSON data from the `/public/data` directory.
 
 ## 📊 Production Readiness
 
