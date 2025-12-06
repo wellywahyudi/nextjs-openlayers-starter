@@ -2,17 +2,21 @@
 
 import { useState, useCallback } from "react";
 import { toast } from "sonner";
-import { OpenLayersMap } from "@/components/map/OpenLayersMap";
-import { OpenLayersTileLayer } from "@/components/map/OpenLayersTileLayer";
-import { OpenLayersGeoJSON } from "@/components/map/OpenLayersGeoJSON";
-import { MapControls } from "@/components/map/MapControls";
-import { MapTileSwitcher } from "@/components/map/MapTileSwitcher";
-import { MapSearchBar } from "@/components/map/MapSearchBar";
-import { MapTopBar } from "@/components/map/MapTopBar";
-import { MapDetailsPanel } from "@/components/map/MapDetailsPanel";
-import { MapPOIPanel } from "@/components/map/MapPOIPanel";
-import { MapContextMenu } from "@/components/map/MapContextMenu";
-import { MapMeasurementPanel } from "@/components/map/MapMeasurementPanel";
+import {
+  OpenLayersMap,
+  OpenLayersTileLayer,
+  OpenLayersGeoJSON,
+} from "@/components/openlayers";
+import {
+  MapControls,
+  MapTileSwitcher,
+  MapSearchBar,
+  MapTopBar,
+  MapDetailsPanel,
+  MapPOIPanel,
+  MapContextMenu,
+  MapMeasurementPanel,
+} from "@/components/map";
 import { useMapTileProvider } from "@/hooks/useMapTileProvider";
 import { usePOIManager } from "@/hooks/usePOIManager";
 import { useMapContextMenu } from "@/hooks/useMapContextMenu";
